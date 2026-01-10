@@ -11,6 +11,7 @@ export const getProfileAnalysis = async (profile: ProfileInput, estimatedValue: 
     
     Profile Details:
     - Monthly Salary: ₹${profile.monthlySalary.toLocaleString()}
+    - Profession: ${profile.profession}
     - Education: ${profile.educationLevel}
     - Education Expenses: ₹${profile.educationExpenses.toLocaleString()}
     - Marital Status: ${profile.maritalStatus}
@@ -20,9 +21,9 @@ export const getProfileAnalysis = async (profile: ProfileInput, estimatedValue: 
     - Estimated Valuation: ₹${estimatedValue.toLocaleString()}
 
     Provide a professional 3-paragraph analysis:
-    1. Economic Stability: Evaluate their current financial standing and growth potential.
-    2. Social Mobility: Discuss how their education and assets contribute to their status.
-    3. Advice: Suggest one way they could improve their "profile value".
+    1. Economic Stability: Evaluate their current financial standing and growth potential based on their profession and assets.
+    2. Social Mobility: Discuss how their career choice, education, and assets contribute to their status in a traditional marriage market context.
+    3. Advice: Suggest one way they could improve their "profile value" or career trajectory.
     
     Keep the tone professional and informative. Frame it as "market worth" and "socio-economic stability" while keeping it for fun.
   `;

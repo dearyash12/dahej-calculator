@@ -11,6 +11,7 @@ import {
   EDUCATION_MULTIPLIERS, 
   MARITAL_STATUS_WEIGHTS, 
   LOCATION_WEIGHTS, 
+  PROFESSION_WEIGHTS,
   ASSET_WEIGHTS, 
   BASE_SALARY_MULTIPLIER 
 } from './constants';
@@ -29,16 +30,18 @@ const App: React.FC = () => {
     const eduExpVal = input.educationExpenses * EDUCATION_MULTIPLIERS[input.educationLevel];
     const maritalVal = MARITAL_STATUS_WEIGHTS[input.maritalStatus];
     const locationVal = LOCATION_WEIGHTS[input.location];
+    const professionVal = PROFESSION_WEIGHTS[input.profession];
     const homeVal = input.hasHome ? ASSET_WEIGHTS.HOME : 0;
     const carVal = input.hasCar ? ASSET_WEIGHTS.CAR : 0;
 
-    const total = salaryVal + eduExpVal + maritalVal + locationVal + homeVal + carVal;
+    const total = salaryVal + eduExpVal + maritalVal + locationVal + professionVal + homeVal + carVal;
 
     const breakdown = [
-      { name: 'Annualized Salary', value: salaryVal, color: '#92400e' },
-      { name: 'Education Value', value: Math.round(eduExpVal), color: '#d97706' },
-      { name: 'Demographic Factors', value: Math.max(0, maritalVal + locationVal), color: '#f59e0b' },
-      { name: 'Asset Holdings', value: homeVal + carVal, color: '#fbbf24' },
+      { name: 'Annual Salary Base', value: salaryVal, color: '#92400e' },
+      { name: 'Education Premium', value: Math.round(eduExpVal), color: '#d97706' },
+      { name: 'Profession Bonus', value: professionVal, color: '#b45309' },
+      { name: 'Social Factors', value: Math.max(0, maritalVal + locationVal), color: '#f59e0b' },
+      { name: 'Fixed Assets', value: homeVal + carVal, color: '#fbbf24' },
     ];
 
     const analysis = await getProfileAnalysis(input, total);
@@ -57,7 +60,6 @@ const App: React.FC = () => {
     setLoading(true);
     setResult(null);
 
-    // Satirical Alimony Logic
     const incomeDiff = Math.max(0, input.yourMonthlySalary - input.spouseMonthlySalary);
     const maintenanceBase = incomeDiff * 0.25;
     const durationBonus = input.marriageDuration * 2000;
@@ -67,10 +69,10 @@ const App: React.FC = () => {
     const totalMonthly = maintenanceBase + durationBonus + childrenBonus + locationBonus;
 
     const breakdown = [
-      { name: 'Income Differential', value: Math.round(maintenanceBase), color: '#1d4ed8' },
-      { name: 'Duration Factor', value: durationBonus, color: '#3b82f6' },
-      { name: 'Child Support Base', value: childrenBonus, color: '#60a5fa' },
-      { name: 'Location Cost', value: locationBonus, color: '#93c5fd' },
+      { name: 'Income Split', value: Math.round(maintenanceBase), color: '#1e40af' },
+      { name: 'Loyalty Factor', value: durationBonus, color: '#3b82f6' },
+      { name: 'Caregiver Support', value: childrenBonus, color: '#60a5fa' },
+      { name: 'Regional Adjust', value: locationBonus, color: '#93c5fd' },
     ];
 
     const analysis = await getAlimonyAnalysis(input, totalMonthly);
@@ -95,42 +97,57 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen transition-colors duration-500">
       <Header />
       
-      <main className="max-w-4xl mx-auto px-4 mt-8 space-y-8">
-        <section className="bg-white border border-gray-100 p-2 rounded-2xl flex shadow-sm">
+      <main className="max-w-4xl mx-auto px-4 mt-12 space-y-10">
+        <section className="bg-white/80 backdrop-blur-sm border border-gray-100 p-1.5 rounded-2xl flex shadow-xl shadow-amber-900/5">
           <button 
             onClick={() => { setActiveTab('dahej'); setResult(null); }}
-            className={`flex-1 py-3 rounded-xl font-semibold transition-all ${activeTab === 'dahej' ? 'bg-amber-600 text-white shadow-md' : 'text-gray-500 hover:bg-gray-50'}`}
+            className={`flex-1 py-4 rounded-xl font-bold transition-all duration-300 flex items-center justify-center space-x-2 ${
+              activeTab === 'dahej' 
+              ? 'bg-gradient-to-r from-amber-600 to-amber-500 text-white shadow-lg shadow-amber-600/20' 
+              : 'text-gray-500 hover:bg-amber-50 hover:text-amber-700'}`}
           >
-            Dahej Calculator
+            <span>⚖️</span>
+            <span>Dahej Calculator</span>
           </button>
           <button 
             onClick={() => { setActiveTab('alimony'); setResult(null); }}
-            className={`flex-1 py-3 rounded-xl font-semibold transition-all ${activeTab === 'alimony' ? 'bg-blue-600 text-white shadow-md' : 'text-gray-500 hover:bg-gray-50'}`}
+            className={`flex-1 py-4 rounded-xl font-bold transition-all duration-300 flex items-center justify-center space-x-2 ${
+              activeTab === 'alimony' 
+              ? 'bg-gradient-to-r from-blue-700 to-indigo-600 text-white shadow-lg shadow-blue-600/20' 
+              : 'text-gray-500 hover:bg-blue-50 hover:text-blue-700'}`}
           >
-            Alimony Calculator
+            <span>💔</span>
+            <span>Alimony Calculator</span>
           </button>
         </section>
 
-        <section className={`${activeTab === 'alimony' ? 'bg-blue-50 border-blue-100 text-blue-900' : 'bg-amber-50 border-amber-100 text-amber-900'} border p-4 rounded-xl text-center text-sm shadow-sm transition-colors duration-300`}>
-          <p>
-            ✨ <strong>Just for fun!</strong> This website is for entertainment purposes only and does not promote dowry or separation.
+        <section className={`transform transition-all duration-500 border p-5 rounded-2xl text-center text-sm font-medium shadow-sm ${
+          activeTab === 'alimony' 
+          ? 'bg-blue-50/50 border-blue-100 text-blue-800' 
+          : 'bg-amber-50/50 border-amber-100 text-amber-800'
+        }`}>
+          <p className="flex items-center justify-center space-x-2">
+            <span className="text-xl">✨</span>
+            <span><strong>Disclaimer:</strong> This is a satirical tool for social commentary. It does not promote unethical practices.</span>
           </p>
         </section>
 
-        {activeTab === 'dahej' ? (
-          <CalculatorForm onCalculate={calculateWorth} />
-        ) : (
-          <AlimonyForm onCalculate={calculateAlimony} />
-        )}
+        <div className="transition-all duration-500 transform">
+          {activeTab === 'dahej' ? (
+            <CalculatorForm onCalculate={calculateWorth} />
+          ) : (
+            <AlimonyForm onCalculate={calculateAlimony} />
+          )}
+        </div>
         
-        <div id="calculation-results">
+        <div id="calculation-results" className="scroll-mt-24">
           <ResultsDisplay result={result} loading={loading} />
         </div>
 
-        <div className="pt-12">
+        <div className="pt-8">
           <BillPayerRandomizer />
         </div>
       </main>

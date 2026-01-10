@@ -1,5 +1,5 @@
 
-import { EducationLevel, LocationType, MaritalStatus } from './types';
+import { EducationLevel, LocationType, MaritalStatus, Profession } from './types';
 
 export const EDUCATION_MULTIPLIERS: Record<EducationLevel, number> = {
   'Schooling': 0.8,
@@ -20,6 +20,20 @@ export const LOCATION_WEIGHTS: Record<LocationType, number> = {
   'India - Urban (Sehri)': 50000,
   'India - Semi-Urban': 25000,
   'India - Rural (Dehati)': 0,
+};
+
+export const PROFESSION_WEIGHTS: Record<Profession, number> = {
+  'Doctor': 150000,
+  'Engineer': 100000,
+  'IAS/IPS Officer': 300000,
+  'Government Job': 250000,
+  'Software Engineer': 120000,
+  'Teacher': 60000,
+  'Lawyer': 80000,
+  'Businessman': 200000,
+  'Artist': 40000,
+  'Other Professional': 50000,
+  'Unemployed': -100000,
 };
 
 export const ASSET_WEIGHTS = {
